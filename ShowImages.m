@@ -1,4 +1,4 @@
-%function ShowImages(SavedFrames, Depth, Color)
+function ShowImages(SavedFrames, Depth, Color)
     % This function plays the footage created and saved by the function
     % SaveImages. Which data is shown (Depth and/or Color) depends on which
     % data is present in the file and which data is wanted by the user.
@@ -93,10 +93,10 @@
         end
         
         if Color_Show == 1
-           color = allFramesColor(:,:,:,i);
+           color = rescale(allFramesColor(:,:,:,i));
            set(h2,'CData',color); 
            pause_time =(timestampsColor(i+1) - timestampsColor(i))*10e-10;
         end
         pause(pause_time);
     end
-%end
+end

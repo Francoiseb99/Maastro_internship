@@ -1,12 +1,19 @@
-function SaveImages(filename, Depth, Color)
+% function SaveImagesV2(filename, Depth, Color, IR)
     % This function makes a recording using the Azure Kinect DK and saves
     % the data under a specified filename. It can be chosen to include
-    % depth images and / or color images.
+    % depth images and / or color and / or IR images. It is an augmented
+    % version of SaveImages. Differences with the functions SaveImages
+    % and ShowSavedImages are the fact that the V2 versions include
+    % infrared footage, don't use intervaltimes based on the actuall
+    % interval but rather a preset interval time and slightly different
+    % variablenames so the data can be used for the runDetection.m file
+    % from Nick Staut.
     %
     % Veriable(s):
     %   filename: specify under what name the data should be saved
     %   Depth: acquire depth data yes:1 or no:0
     %   Color: acquire color images yes:1 or no:0
+    %   IR: acquire infrared images yes:1 or no:0
     %
     %
     % Original code belonged to: 
@@ -18,9 +25,10 @@ function SaveImages(filename, Depth, Color)
     % Use this if you want to run it outside a function for testing
     % purposes
     
-    %filename = 'filename.mat';   
-    %Depth = 1;
-    %Color = 0;
+    filename = 'CalibrationBunkerV2.mat';   
+    Depth = 1;
+    Color = 1;
+    IR = 1;
     
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
@@ -33,7 +41,7 @@ function SaveImages(filename, Depth, Color)
     % 'wfov' or 'nfov'
     % 'sensors_on' or 'sensors_off'
     
-    kz = KinZ('720p', 'unbinned', 'nfov', 'imu_on');      %% Set preference!
+    kz = KinZ('720p', 'binned', 'wfov', 'imu_on');      %% Set preference!
 
     %% Find min and max depth
     % Here the minimum and maximum depth value are found for the first image,
@@ -82,6 +90,7 @@ function SaveImages(filename, Depth, Color)
 
     % Create matrices for the images
     depth = zeros(depthHeight,depthWidth,'uint16');
+    infrared = zeros(depthHeight,depthWidth,'uint16');
     color = zeros(colorHeight*colorScale,colorWidth*colorScale,3,'uint8');
 
     %% Create figures
@@ -104,8 +113,18 @@ function SaveImages(filename, Depth, Color)
         set(f2,'keypress','k=get(f2,''currentchar'');'); % Listen keypress
     end
     
+    if IR == 1
+        % infrared stream figure
+        f3 = figure;
+        h3 = imshow(infrared);
+        ax3 = f3.CurrentAxes;
+        title(ax3, 'Infrared Source');
+    end
+    
+    pause(2)    % gives you some extra time
+    
     %% Acquire data
-    nrFrames=25;                                       %% Set preference!
+    nrFrames=200;                                       %% Set preference!
     timestampsDepth=zeros(size(nrFrames));
     allFramesDepth=uint16(zeros(depthHeight, depthWidth, nrFrames));
 	allFramesColor=uint16(zeros(colorHeight*colorScale,colorWidth*colorScale,3, nrFrames));
@@ -140,20 +159,43 @@ function SaveImages(filename, Depth, Color)
             allFramesColor(:,:,:,i)= color;
         end
         
+        if validData && IR ==1
+            % Copy data to Matlab matrices 
+            [infrared, infrared_timestamp] = kz.getinfrared;
+            
+            % update infrared figure
+            infrared = imadjust(infrared,[],[],0.5);
+            set(h3,'CData',infrared); 
+            timestampsIR(i) = infrared_timestamp;
+            allFramesIR(:,:,i)= infrared;
+        end
+        
         disp(i)
-        pause(0.01)
+        pause(0.5)
     end    
     
     %% Save files
-    if Depth == 1 && Color == 1
-        save(filename, 'allFramesDepth', 'allFramesColor', 'timestampsDepth', 'timestampsColor')
-    elseif Depth == 1 && Color == 0
-        save(filename, 'allFramesDepth', 'timestampsDepth')
-    elseif Depth == 0 && Color == 1
-        save(filename, 'allFramesColor', 'timestampsColor')
+    DepthFrames = allFramesDepth;
+    ColorFrames = allFramesColor;
+    InfraredFrames = allFramesIR;
+    
+    if Depth == 1 && Color == 1 && IR == 1
+        save(filename, 'DepthFrames', 'ColorFrames','InfraredFrames')
+    elseif Depth == 1 && Color == 1 && IR == 0
+        save(filename, 'DepthFrames','ColorFrames')
+    elseif Depth == 1 && Color == 0 && IR == 1
+        save(filename, 'DepthFrames','InfraredFrames')
+    elseif Depth == 0 && Color == 1 && IR == 1
+        save(filename, 'ColorFrames','InfraredFrames') 
+    elseif Depth == 1 && Color == 0 && IR == 0
+        save(filename, 'DepthFrames')
+    elseif Depth == 0 && Color == 1 && IR == 0
+        save(filename, 'ColorFrames') 
+    elseif Depth == 0 && Color == 0 && IR == 1
+        save(filename, 'InfraredFrames')     
     end
     
     %% Clear all variables after saving for next use
     clear all;      % This can be commented out, however you'll have to do it manually before next use
 
-end
+% end

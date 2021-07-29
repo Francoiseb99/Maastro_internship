@@ -18,6 +18,17 @@ function ShowSavedImages(SavedFrames, Depth, Color)
     %Depth = 1;
     %Color = 1;
     
+    %% Extra settings / options
+    
+    % set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered
+    AutomaticOutOfRange = false;     
+
+    % set minumum and maximum depth range in case the manual option is
+    % chosen
+    MinimumDepth = 1450;
+    MaximumDepth = 1650;
+    
     %% Add data path
     addpath('C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\Matlab arrays');
     
@@ -67,17 +78,15 @@ function ShowSavedImages(SavedFrames, Depth, Color)
     %% Find min and max depth
     % Here the minimum and maximum depth value are found for the first image,
     % based on this the range for displaying the other images is determined.
-    
-    AutomaticOutOfRange = false;     %set to true if you want the range to be determined automatically based on first image, set to false if manually is prefered
-    
+
     if AutomaticOutOfRange == true
         depth = allFramesDepth(:,:,1);
 
         MaxDepth=max(max(depth));
         MinDepth=min(min(depth)); 
     else
-        MaxDepth = 1650;         %set preference when not using automated method
-        MinDepth = 1450;
+        MaxDepth = MaximumDepth;        
+        MinDepth = MinimumDepth;
     end
  
     %% Create figures  
@@ -106,13 +115,13 @@ function ShowSavedImages(SavedFrames, Depth, Color)
         if Depth_Show == 1
            depth = allFramesDepth(:,:,i);
            set(h1,'CData',depth); 
-           pause_time = (timestampsDepth(i+1) - timestampsDepth(i))*10e-9;
+           pause_time = (timestampsDepth(i+1) - timestampsDepth(i))*10e-10;
         end
         
         if Color_Show == 1
            color = rescale(allFramesColor(:,:,:,i));
            set(h2,'CData',color); 
-           pause_time =(timestampsColor(i+1) - timestampsColor(i))*10e-9;
+           pause_time =(timestampsColor(i+1) - timestampsColor(i))*10e-10;
         end
         pause(pause_time);
     end   

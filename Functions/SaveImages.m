@@ -7,10 +7,6 @@ function SaveImages(filename, Depth, Color)
     %   filename: specify under what name the data should be saved
     %   Depth: acquire depth data yes:1 or no:0
     %   Color: acquire color images yes:1 or no:0
-    %
-    %
-    % Original code belonged to: 
-    % Juan R. Terven, jrterven@hotmail.com & Diana M. Cordova, diana_mce@hotmail.com
         
     close all;
     
@@ -21,6 +17,20 @@ function SaveImages(filename, Depth, Color)
     %filename = 'filename.mat';   
     %Depth = 1;
     %Color = 0;
+    
+    %% Extra settings / options
+    
+    % set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered
+    AutomaticOutOfRange = false;     
+
+    % set minumum and maximum depth range in case the manual option is
+    % chosen
+    MinimumDepth = 0;
+    MaximumDepth = 5000;
+    
+    % set number of frames to be taken
+    nrFrames=25;                                      
     
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
@@ -38,9 +48,7 @@ function SaveImages(filename, Depth, Color)
     %% Find min and max depth
     % Here the minimum and maximum depth value are found for the first image,
     % based on this the range for displaying the other images is determined.
-    
-    AutomaticOutOfRange = false;     %set to true if you want the range to be determined automatically based on first image, set to false if manually is prefered
-    
+        
     if AutomaticOutOfRange == true
         depth = zeros(depthHeight,depthWidth,'uint16');
         % Depth stream figure
@@ -66,8 +74,8 @@ function SaveImages(filename, Depth, Color)
         MaxDepth=max(max(depth));
         MinDepth=min(min(depth)); 
     else
-        MaxDepth = 5000;         %set preference when not using automated method
-        MinDepth = 0;
+        MaxDepth = MaximumDepth;         
+        MinDepth = MinimumDepth;
     end
     
     %% Image specifications
@@ -105,7 +113,6 @@ function SaveImages(filename, Depth, Color)
     end
     
     %% Acquire data
-    nrFrames=25;                                       %% Set preference!
     timestampsDepth=zeros(size(nrFrames));
     allFramesDepth=uint16(zeros(depthHeight, depthWidth, nrFrames));
 	allFramesColor=uint16(zeros(colorHeight*colorScale,colorWidth*colorScale,3, nrFrames));

@@ -20,12 +20,31 @@
     clear all;          %when using the function instead of this testing section, 
     close all;          %make sure you also clear and close all before running the function
     nrFrames = 1000000;
-    Today = '25-07-2021'; Today = num2str(Today); %note that this still gives some error during saving as the date is not represented correctly
     
     %% Extra settings / options
-    AutomaticOutOfRange = false;    %set to true if you want the range to be determined automatically based on first image, set to false if manually is prefered
-    LivePlot = false;                %set to true if you want to get a live feed from the depth estimation (note that this plot may differ slightly from the final plot as it is based on the i value in the for loop and not the time
     
+    % set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered
+    AutomaticOutOfRange = false;     
+
+    % set minumum and maximum depth range in case the manual option is
+    % chosen
+    MinimumDepth = 4000;
+    MaximumDepth = 0;
+    
+    % set to true if you want to get a live feed from the depth estimation 
+    % (note that this plot may differ slightly from the final plot as it is 
+    % based on the i value in the for loop and not the time)
+    % (note that this LivePlot can cause a random error causing the code to 
+    % stop (have not been able to solve this), hence it is not advised for
+    % long runs)
+    LivePlot = false;                
+
+    % use this to adjust the name it is saved under
+    % (note that this still gives some error during saving as the date is 
+    % not represented correctly)
+    Today = '25-07-2021'; Today = num2str(Today); 
+
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
     
@@ -75,8 +94,8 @@
         MaxDepth=max(max(depth));
         MinDepth=min(min(depth)); 
     else
-        MaxDepth = 4000;         %set preference when not using automated method
-        MinDepth = 0;
+        MaxDepth = MaximumDepth;        
+        MinDepth = MinimumDepth;
     end
     
     %% Create figure
@@ -159,7 +178,6 @@
                 figure(f);
                 plot(ax,(1:i),MeanDepthList);
             end
-            
         end
                 
         disp(i)

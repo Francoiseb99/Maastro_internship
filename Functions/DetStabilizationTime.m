@@ -23,8 +23,8 @@
     UseMaxDepth = 1;
     UseRelative = 1;
     
-    StabilizationPercentage = 99.5;
-    ManualStabDiv = 0.001;
+    StabilizationPercentage = 99.5; % this means the the relating points only differ 0.5% of the difference from maximum and minimum encountered depth (note that this is a relativistic approach)
+    ManualStabDiv = 0.001;          % this means the difference between the poinst is not greater than this number (note that this is not a relativistic approach)
     
     %% Determine stabilization time
     MaxDepth = max(DepthArray);

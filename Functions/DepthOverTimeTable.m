@@ -1,4 +1,4 @@
-function Table = DepthOverTimeTable(DepthArray,TimeArray,TimePoints)
+% function Table = DepthOverTimeTable(DepthArray,TimeArray,TimePoints)
 	% This function returns a table with the depths at the predefined
 	% timepoints allong with the difference of this depth with the final
 	% depth and with the maximum encountered depth.
@@ -34,4 +34,5 @@ function Table = DepthOverTimeTable(DepthArray,TimeArray,TimePoints)
     
     %% Make an actual table from the matrix
     Table = array2table(Matrix,'VariableNames',{'Time (min)','Depth','DivDepthMax', 'DivDepthFinal'});
-end
+
+% end

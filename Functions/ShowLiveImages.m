@@ -21,6 +21,17 @@ function ShowLiveImages(Depth, Color, IR)
     Color = 1;
     IR = 1;
     
+    %% Extra settings / options
+    
+    % set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered
+    AutomaticOutOfRange = false;     
+
+    % set minumum and maximum depth range in case the manual option is
+    % chosen
+    MinimumDepth = 1500;
+    MaximumDepth = 0;    
+    
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
     
@@ -52,8 +63,6 @@ function ShowLiveImages(Depth, Color, IR)
     % Here the minimum and maximum depth value are found for the first image,
     % based on this the range for displaying the other images is determined.
     
-    AutomaticOutOfRange = false;     %set to true if you want the range to be determined automatically based on first image, set to false if manually is prefered
-    
     if AutomaticOutOfRange == true
         % Depth stream figure
         f1 = figure;
@@ -78,10 +87,9 @@ function ShowLiveImages(Depth, Color, IR)
         MaxDepth=max(max(depth));
         MinDepth=min(min(depth)); 
     else
-        MaxDepth = 1500;         %set preference when not using automated method
-        MinDepth = 0;
+        MaxDepth = MaximumDepth;         
+        MinDepth = MinimumDepth;
     end
-    
 
     %% Create figures
     if Depth == 1

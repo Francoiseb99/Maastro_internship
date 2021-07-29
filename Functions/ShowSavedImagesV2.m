@@ -24,7 +24,18 @@ function ShowSavedImagesV2(SavedFrames, Depth, Color, IR)
     %Depth = 1;
     %Color = 1;
     %IR = 1;
+
+    %% Extra settings / options
     
+    % set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered
+    AutomaticOutOfRange = false;     
+
+    % set minumum and maximum depth range in case the manual option is
+    % chosen
+    MinimumDepth = 0;
+    MaximumDepth = 5000;
+        
     %% Add data path
     addpath('C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\Matlab arrays');
     
@@ -92,17 +103,15 @@ function ShowSavedImagesV2(SavedFrames, Depth, Color, IR)
     %% Find min and max depth
     % Here the minimum and maximum depth value are found for the first image,
     % based on this the range for displaying the other images is determined.
-    
-    AutomaticOutOfRange = false;     %set to true if you want the range to be determined automatically based on first image, set to false if manually is prefered
-    
+        
     if AutomaticOutOfRange == true
         depth = allFramesDepth(:,:,1);
 
         MaxDepth=max(max(depth));
         MinDepth=min(min(depth)); 
     else
-        MaxDepth = 5000;         %set preference when not using automated method
-        MinDepth = 0;
+        MaxDepth = MaximumDepth;         
+        MinDepth = MinimumDepth;
     end
  
     %% Create figures  

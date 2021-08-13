@@ -5,7 +5,7 @@ function ShowLiveImages(Depth, Color, IR)
     % does not have a predetermined end time, meaning the stream needs to 
     % be manually terminated.
     %
-    % Veriable(s):
+    % Variable(s):
     %   Depth: show depth data if available yes:1 or no:0
     %   Color: show color images if available yes:1 or no:0
     %   IR: show infrared images if available yes:1 or no:0
@@ -120,8 +120,6 @@ function ShowLiveImages(Depth, Color, IR)
     end    
     
     %% Acquire data
-    % Loop until pressing 'q' on any figure
-    k=[];
     while true
         % Get frames from Kinect and save them on underlying buffer
         % 'color','depth','infrared'
@@ -155,13 +153,6 @@ function ShowLiveImages(Depth, Color, IR)
             infrared = imadjust(infrared,[],[],0.5);
             set(h3,'CData',infrared); 
         end        
-        
-        
-        % If user presses 'q', exit loop
-        if ~isempty(k)
-            if strcmp(k,'q'); break; end
-            k = [];
-        end
         
         pause(0.1)
     end    

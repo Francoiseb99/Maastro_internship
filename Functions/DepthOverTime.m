@@ -8,8 +8,10 @@
     %     including a plot which gives the standard deviation
     %   - A plot which gives the mean depth over the area averaged per
     %     minute including a plot which gives the standard deviation
+    %   - A 3D plot including the time, the mean depth difference with the
+    %     manually measured depth and the temperature of the camera
     %
-    % Veriable(s):
+    % Variable(s):
     %   nrFrames:   specify number of frames to determine duration of data
     %               acquiring (rough estimation gives 25-30 frames per second)
 
@@ -29,8 +31,8 @@
 
     % set minumum and maximum depth range in case the manual option is
     % chosen
-    MinimumDepth = 4000;
-    MaximumDepth = 0;
+    MinimumDepth = 0;
+    MaximumDepth = 4000;
     
     % set to true if you want to get a live feed from the depth estimation 
     % (note that this plot may differ slightly from the final plot as it is 
@@ -43,7 +45,10 @@
     % use this to adjust the name it is saved under
     % (note that this still gives some error during saving as the date is 
     % not represented correctly)
-    Today = '25-07-2021'; Today = num2str(Today); 
+    Name = '08-08-2021'; Name = num2str(Name); 
+    
+    % Set actual depth here (measured by hand) (mm)
+    ActualDepth = 1500;
 
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
@@ -150,6 +155,7 @@
     %% Acquire data
     MeanDepthList=[];
     timestampsDepth=[];
+    TempList = [];
         
     tic
     for i = 1:nrFrames
@@ -162,6 +168,11 @@
         if validData 
             % Copy data to Matlab matrices        
             [depth, depth_timestamp] = kz.getdepth;
+            
+            % Get sensor data
+            sensorData = kz.getsensordata;
+            temp = sensorData.temp;
+            TempList = [TempList, temp];
 
             % Update depth figure
             set(h2,'CData',depth); 
@@ -199,8 +210,9 @@
     xlabel(ax3, 'Time (sec)');
     ylabel(ax3, 'Depth (mm)');
     
-   savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\Mean Depth against Time 10 hour run ', Today, '.fig');
-   saveas(gcf,savename_fig)
+    % Save image as a .fig file
+    savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\Mean Depth against Time 10 hour run ', Name, '.fig');
+    saveas(gcf,savename_fig)
     
     %% Plot MeanDepth of the area against time (per second version)
     MDL_sec = [];
@@ -243,7 +255,8 @@
     xlabel(ax4, 'Time (seconds)');
     ylabel(ax4, 'Std depth (mm)'); 
     
-    savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\Mean Depth against Time 10 hour run seconds version ', Today, '.fig');
+    % Save image as a .fig file
+    savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\Mean Depth against Time 10 hour run seconds version ', Name, '.fig');
     saveas(gcf,savename_fig)
 
     %% Plot MeanDepth against time (per minute version)
@@ -288,9 +301,82 @@
     xlabel(ax5, 'Time (minutes)');
     ylabel(ax5, 'Std depth (mm)');     
 
-    savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\Mean Depth against Time 10 hour run minutes version ', Today, '.fig');
+    % Save image as a .fig file
+    savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\Mean Depth against Time 10 hour run minutes version ', Name, '.fig');
     saveas(gcf,savename_fig)
     
+    %% Plot temperature against time and depth difference
+    DepthDifference = MeanDepthList-ActualDepth;
+    f6=figure;
+    time = (timestampsDepth - timestampsDepth(1));
+    time_sec = double(time)*10^-9;
+    h6 = plot3(time_sec,TempList,DepthDifference);
+	ax6 = f6.CurrentAxes;
+	title(ax6, 'Mean Depth against Time');
+    xlabel(ax6, 'Time (sec)');
+    ylabel(ax6, 'Temperature (degrees celsius)');
+    zlabel(ax6, 'Depth difference (mm)');
+    
+    % Use this to view the axis specifically
+%     play = true;
+%     while play == true
+%         view(0,90)  % XY
+%         pause(2)
+%         view(0,0)   % XZ
+%         pause(2)
+%         view(90,0)  % YZ
+%         pause(2)
+%     end
+     
+    % Save image as a .fig file
+    savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\Temperature against Time and Depth Difference 10 hour run ', Name, '.fig');
+    saveas(gcf,savename_fig)
+    
+    %% Plot MeanDepth of the area against Temperature (per second version)
+    MDL_temp = [];
+    meanMDL_temp = [];
+    stdMDL_temp = [];
+    temp = [];
+    
+    for m = 12:26       % Determine the number of seconds recorded and loop over this
+        for q = 1:nrFrames
+            if TempList(q)>(m-1) && TempList(q)<(m)     % Assign frames to the second at which it is recorded
+                MDLsub_temp = MeanDepthList(q);
+                MDL_temp = [MDL_temp, MDLsub_temp];
+            end
+            q=q+1;
+        end
+        % Calculate mean and std over each second
+        meanMDLsub_sec = mean(MDL_temp);
+        stdMDLsub_sec = std(MDL_temp);
+        meanMDL_temp = [meanMDL_temp, meanMDLsub_sec];
+        stdMDL_temp = [stdMDL_temp, stdMDLsub_sec];
+        
+        time_seconds_sub = m;
+        temp = [temp, time_seconds_sub];
+    end
+
+    % Create subplot with (1) the average depth of the area and per second
+    % and (2) the standard deviation per second
+    f7=figure;
+    subplot(2,1,1);
+    h7 = plot(temp,meanMDL_temp);
+	ax7 = f7.CurrentAxes;
+	title(ax7, 'Mean Depth against Temperature');
+    xlabel(ax7, 'Temperature (degrees Celcius)');
+    ylabel(ax7, 'Depth (mm)');    
+    
+    subplot(2,1,2);
+    h7 = plot(temp,stdMDL_temp);
+	ax7 = f7.CurrentAxes;
+	title(ax7, 'Std Depth against Temperature');
+    xlabel(ax7, 'Temperature (degrees Celcius)');
+    ylabel(ax7, 'Std depth (mm)'); 
+    
+    % Save image as a .fig file
+    savename_fig = sprintf ( '%s%i%s', 'C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\DepthOverTimePlot\  ', Name, '.fig');
+    saveas(gcf,savename_fig)
+   
     %% Determine min, max, corresponding time and total footage running time
     text1 = 'The minimum encountered average depth was ';
     [minimum,index1] = min(MeanDepthList);
@@ -305,8 +391,10 @@
     tictoc_time_min = floor(tictoc_time/60);
     text7 = ' minutes and ';
     tictoc_time_remsec = ((tictoc_time)/60-tictoc_time_min)*60;
-    text8 = ' seconds.';
-    X = [text1,num2str(minimum),text2,num2str(time1),text3,num2str(maximum),text4,num2str(time2),text5,num2str(tictoc_time), text6,num2str(tictoc_time_min),text7,num2str(tictoc_time_remsec),text8];
+    text8 = ' seconds. The encountered temperature difference is ';
+    TempDiff = TempList(end)-TempList(1);
+    text9 = ' degrees celcius.';
+    X = [text1,num2str(minimum),text2,num2str(time1),text3,num2str(maximum),text4,num2str(time2),text5,num2str(tictoc_time), text6,num2str(tictoc_time_min),text7,num2str(tictoc_time_remsec),text8,num2str(TempDiff),text9];
     
     disp(X)
 

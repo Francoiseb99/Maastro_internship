@@ -9,7 +9,7 @@
     % variablenames so the data can be used for the runDetection.m file
     % from Nick Staut.
     %
-    % Veriable(s):
+    % Variable(s):
     %   filename: specify under what name the data should be saved
     %   Depth: acquire depth data yes:1 or no:0
     %   Color: acquire color images yes:1 or no:0
@@ -139,7 +139,8 @@
     timestampsDepth=zeros(size(nrFrames));
     allFramesDepth=uint16(zeros(depthHeight, depthWidth, nrFrames));
 	allFramesColor=uint16(zeros(colorHeight*colorScale,colorWidth*colorScale,3, nrFrames));
-
+    allFramesIR = uint16(zeros(depthHeight, depthWidth, nrFrames));
+    
     for i = 1:nrFrames
         % Get frames from Kinect and save them on underlying buffer
         % 'color','depth','infrared'

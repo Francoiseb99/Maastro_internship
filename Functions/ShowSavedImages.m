@@ -1,12 +1,13 @@
-function ShowSavedImages(SavedFrames, Depth, Color)
+function ShowSavedImages(SavedFrames, Depth, Color, IR)
     % This function plays the footage created and saved by the function
     % SaveImages. Which data is shown (Depth and/or Color) depends on which
     % data is present in the file and which data is wanted by the user.
     %
-    % Veriable(s):
+    % Variable(s):
     %   SavedFrames: specify under what name the data is saved
     %   Depth: show depth data if available yes:1 or no:0
     %   Color: show color images if available yes:1 or no:0
+    %   IR:    show infrared images if available yes:1 or no:0
     
     close all; 
     
@@ -17,6 +18,7 @@ function ShowSavedImages(SavedFrames, Depth, Color)
     %SavedFrames = 'filename2.mat';   
     %Depth = 1;
     %Color = 1;
+    %IR = 1;
     
     %% Extra settings / options
     
@@ -26,8 +28,8 @@ function ShowSavedImages(SavedFrames, Depth, Color)
 
     % set minumum and maximum depth range in case the manual option is
     % chosen
-    MinimumDepth = 1450;
-    MaximumDepth = 1650;
+    MinimumDepth = 2950;
+    MaximumDepth = 3050;
     
     %% Add data path
     addpath('C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\Matlab arrays');
@@ -54,6 +56,15 @@ function ShowSavedImages(SavedFrames, Depth, Color)
         end
         Color_Show = 0;
     end
+    
+    if isfield(allData, 'allFramesIR') && IR == 1
+        IR_Show = 1;
+    else
+        if IR == 1
+           disp('Infrared data not present in file and is therefore not shown.')
+        end
+        IR_Show = 0;
+    end
      
     %% Take the data from the structure and create matrices for images
 	if Depth_Show == 1
@@ -75,6 +86,17 @@ function ShowSavedImages(SavedFrames, Depth, Color)
         
         color = zeros(colorHeight,colorWidth,3,'uint8');
     end
+    
+	if IR_Show == 1
+        allFramesIR=allData.allFramesIR;
+        timestampsIR=allData.timestampsIR;
+        infraredHeight = size(allFramesIR,1);
+        infraredWidth = size(allFramesIR,2);
+        nrFrames = size(allFramesIR,3);
+        
+        infrared = zeros(infraredHeight,infraredWidth,'uint16');
+    end
+    
     %% Find min and max depth
     % Here the minimum and maximum depth value are found for the first image,
     % based on this the range for displaying the other images is determined.
@@ -110,6 +132,14 @@ function ShowSavedImages(SavedFrames, Depth, Color)
         set(f2,'keypress','k=get(f2,''currentchar'');'); % Listen keypress
     end
 
+    if IR_show == 1
+        % infrared stream figure
+        f3 = figure;
+        h3 = imshow(infrared);
+        ax3 = f3.CurrentAxes;
+        title(ax3, 'Infrared Source');
+    end
+    
     %% Show data
     for i = 1:nrFrames-1 
         if Depth_Show == 1
@@ -123,6 +153,13 @@ function ShowSavedImages(SavedFrames, Depth, Color)
            set(h2,'CData',color); 
            pause_time =(timestampsColor(i+1) - timestampsColor(i))*10e-10;
         end
+        
+        if IR_Show == 1
+           infrared = allFramesIR(:,:,i);
+           set(h3,'CData',infrared); 
+           pause_time = (timestampsIR(i+1) - timestampsIR(i))*10e-10;
+        end
+        
         pause(pause_time);
     end   
 end

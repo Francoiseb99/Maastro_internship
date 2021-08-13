@@ -4,7 +4,7 @@ function MeanDepth = CalcMeanDepth(SavedFrames)
     % specified by the user afterwhich it will calculate the mean depth
     % over the area over time.
     %
-    % Veriable(s):
+    % Variable(s):
     %   SavedFrames: specify under what name the data is saved
     
     %% Extra settings / options

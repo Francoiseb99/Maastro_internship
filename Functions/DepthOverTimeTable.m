@@ -3,7 +3,7 @@
 	% timepoints allong with the difference of this depth with the final
 	% depth and with the maximum encountered depth.
     %
-    % Veriable(s):
+    % Variable(s):
     %   DepthArray: the array with depth data averaged per minute
     %   TimeArray: the array with time data (minutes)    
     %   TimePoints: an array with desired timepoints for the table
@@ -16,23 +16,25 @@
     TimePoints = [1,10,30,60,120,240,480,555];
     
     %% Create matrix with the desired data
-    MaxDepth = max(DepthArray);
+    MaxDepth = max(DepthArray);     
     
+    % Add final element of the TimeArray by default
     TimePoints = [TimePoints, length(TimeArray)];
     
+    % Fill matrix with the data for the desired time points
     Matrix = [];
     for ii = 1:length(TimePoints)
         TimePoint = TimePoints(ii);
         
         time = TimeArray(TimePoint);
         depth = DepthArray(TimePoint);
-        DivDepthMax = MaxDepth - depth;
-        DivDepthFinal = DepthArray(length(TimeArray)) - depth;
+        DiffDepthMax = MaxDepth - depth;
+        DiffDepthFinal = DepthArray(length(TimeArray)) - depth;
         
-        Matrix = [Matrix; [time, depth, DivDepthMax, DivDepthFinal]];
+        Matrix = [Matrix; [time, depth, DiffDepthMax, DiffDepthFinal]];
     end
     
     %% Make an actual table from the matrix
-    Table = array2table(Matrix,'VariableNames',{'Time (min)','Depth','DivDepthMax', 'DivDepthFinal'});
+    Table = array2table(Matrix,'VariableNames',{'Time (min)','Depth','DiffDepthMax', 'DiffDepthFinal'});
 
 % end

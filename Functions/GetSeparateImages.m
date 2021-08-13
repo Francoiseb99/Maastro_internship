@@ -5,7 +5,7 @@
     % destination should be manually specified at the end of the file.
     % 
     %
-    % Veriable(s):
+    % Variable(s):
     %   SavedFrames: specify under what name the data is saved
     %   Depth: show depth data if available yes:1 or no:0
     %   Color: show color images if available yes:1 or no:0

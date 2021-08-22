@@ -1,4 +1,4 @@
-% function [Matrix2, Matrix3] = DepthOverTimeBuildUp(DepthArrays,TimeArray)
+function [Matrix2, Matrix3] = DepthOverTimeBuildUp(DepthArrays,TimeArray)
 	% This function returns a plot with the average difference of the
 	% depth at a specific time relative to the final depth and relative to
 	% the maximum encountered depth. In addition also a plot with the
@@ -14,15 +14,15 @@
 
     %% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
-    [meanMDL_1,meanMDL_2,meanMDL_3,meanMDL_4,meanMDL_5,time_min_1] = ExtractData();
-    DepthArrays = [meanMDL_1;meanMDL_2;meanMDL_3;meanMDL_4;meanMDL_5];
-    TimeArray = time_min_1;
+    % purposes.
+%     [meanMDL_1,meanMDL_2,meanMDL_3,meanMDL_4,meanMDL_5,time_min_1] = ExtractData();
+%     DepthArrays = [meanMDL_1;meanMDL_2;meanMDL_3;meanMDL_4;meanMDL_5];
+%     TimeArray = time_min_1;
     
     %% Extra settings / options
     
     % Choose to use an interval (true) or an average between the interval
-    % times (false)
+    % times (false).
     Interval = true;
     
     % In both cases an interval time needs to be chosen:
@@ -31,7 +31,7 @@
     %% Create matrix with the desired data
     
     % Create a matrix with desired data for all time points for each depth
-    % array
+    % array.
     Matrix = [];
     for jj = 1:length(DepthArrays(:,1))
         MaxDepth = max(DepthArrays(jj,:));
@@ -61,7 +61,7 @@
     b=IntervalTime; 
     
     % Read out table and take averages over the different depth arrays to
-    % put in the list
+    % put in the list.
     for ll = 1:(length(TimeArray)/IntervalTime)
         depthAverage = [];
         DiffDepthMaxAverage = [];
@@ -137,7 +137,6 @@
     ylabel(ax1, 'Std (mm)'); 
     hold off
     
-    
 %% Table 
 % This table gives percentages relative to first interval average
     Matrix2 = [0 0 0];
@@ -165,4 +164,4 @@
         Diff = percentage-Matrix3(mm,2);       
         Matrix3 = [Matrix3; Xaxis(mm) percentage Diff];
     end    
-% end
+end

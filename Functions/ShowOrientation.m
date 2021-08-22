@@ -1,7 +1,7 @@
-% function ShowOrientation(Duration)
+function ShowOrientation(Duration)
 	% This function provides a live plot of the orientation of the camera
 	% starting out in flat position. It takes the data from the internal
-	% gyroscope (angle speed) and plots this. However this function proved 
+	% gyroscope (angle speed) and plots this. However, this function proved 
     % that this gyroscope is not entirely correct as even when there is no 
     % movement, the plot keeps rotating.
     %
@@ -10,12 +10,12 @@
     
     %% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
-    clear all;        % If the function is used, make sure that the
-                      % workspace is clear before running the function
-    close all;
-    Duration = 2;
+%     clear all;        % If the function is used, make sure that the
+%                       % workspace is clear before running the function
+%     close all;
+%     Duration = 240;
 
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
@@ -30,7 +30,7 @@
     
     kz = KinZ('720p', 'binned', 'wfov', 'imu_on');      %% Set preference!
     
-    %% Create initial cube
+    %% Create initial cube (representing the camera)
     A = [0 0 0];
     B = [2 0 0];
     C = [0 1 0];
@@ -111,7 +111,6 @@
             roll_list = [roll_list, roll_new];
             
             time_list = [time_list, time];
-            
 
             figure(f3);
             plot(time_list,pitch_list); 
@@ -145,19 +144,21 @@
     end    
     
     
-    %% 
-    time_sec = linspace(1,tictoc,(length(time_list)));
+    %% Make final plot
+    time_sec = linspace(1,tictoc/60,(length(time_list)));
     
     f4 = figure;
-    plot(time_sec,pitch_list); 
+    p1 = plot(time_sec,pitch_list); 
     hold on;
-    plot(time_sec,yaw_list); 
+    p2 = plot(time_sec,yaw_list); 
     hold on;
-    plot(time_sec,roll_list); 
+    p3 = plot(time_sec,roll_list); 
     hold off;
+    grid on;
     title('Gyroscope Output against Time');
-    xlabel('Time (sec)');
-    ylabel('Gyroscope output');
+    xlabel('Time (min)');
+    ylabel('Gyroscope output (degrees)');
     xlim([0 max(time_sec)])
-    
-% end
+    set(gca,'XTick',(0:20:max(time_sec)))
+    lgd = legend([p1, p2, p3], {'Pitch', 'Yaw', 'Roll'}, 'location', 'northwest');
+end

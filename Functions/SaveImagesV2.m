@@ -1,11 +1,11 @@
-% function SaveImagesV2(filename, Depth, Color, IR)
+function SaveImagesV2(filename, Depth, Color, IR)
     % This function makes a recording using the Azure Kinect DK and saves
     % the data under a specified filename. It can be chosen to include
     % depth images and / or color and / or IR images. It is an augmented
     % version of SaveImages. Differences with the functions SaveImages
     % and ShowSavedImages are the fact that the V2 versions include
-    % infrared footage, don't use intervaltimes based on the actuall
-    % interval but rather a preset interval time and slightly different
+    % not making use of the interval times based on the actuall
+    % interval but rather a pre-set interval time and slightly different
     % variablenames so the data can be used for the runDetection.m file
     % from Nick Staut.
     %
@@ -14,34 +14,30 @@
     %   Depth: acquire depth data yes:1 or no:0
     %   Color: acquire color images yes:1 or no:0
     %   IR: acquire infrared images yes:1 or no:0
-    %
-    %
-    % Original code belonged to: 
-    % Juan R. Terven, jrterven@hotmail.com & Diana M. Cordova, diana_mce@hotmail.com
-        
+ 
     close all;
     
     %% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
-    filename = 'CalibrationBunkerV2.mat';   
-    Depth = 1;
-    Color = 1;
-    IR = 1;
+%     filename = 'CalibrationBunkerV2.mat';   
+%     Depth = 1;
+%     Color = 1;
+%     IR = 1;
     
     %% Extra settings / options
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 0;
     MaximumDepth = 5000;
     
-    % set number of frames to be taken
+    % Set number of frames to be taken.
     nrFrames=200;   
     
     %% Add Mex path
@@ -126,14 +122,14 @@
     end
     
     if IR == 1
-        % infrared stream figure
+        % Infrared stream figure
         f3 = figure;
         h3 = imshow(infrared);
         ax3 = f3.CurrentAxes;
         title(ax3, 'Infrared Source');
     end
     
-    pause(2)    % gives you some extra time
+    pause(2)    % Gives you some extra time
     
     %% Acquire data
     timestampsDepth=zeros(size(nrFrames));
@@ -175,7 +171,7 @@
             % Copy data to Matlab matrices 
             [infrared, infrared_timestamp] = kz.getinfrared;
             
-            % update infrared figure
+            % Update infrared figure
             infrared = imadjust(infrared,[],[],0.5);
             set(h3,'CData',infrared); 
             timestampsIR(i) = infrared_timestamp;
@@ -210,4 +206,4 @@
     %% Clear all variables after saving for next use
     clear all;      % This can be commented out, however you'll have to do it manually before next use
 
-% end
+end

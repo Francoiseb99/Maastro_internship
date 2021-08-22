@@ -101,16 +101,16 @@ dataObjs = axObjs(1).Children;
 stdMDL_6 = dataObjs(1).YData;
 
 %% Close figures
-close all;  % those figures are opened automatically but are not of any use in this case
+close all;  % Those figures are opened automatically, but are not of any use in this case.
 
 %% Plot figure
 f1=figure;
 
-% create first subplot spanning over multiple spaces to enlarge the figure
-% relative to the second subplot
+% Create first subplot spanning over multiple spaces to enlarge the figure
+% relative to the second subplot.
 subplot(3,4,[1 2 3 5 6 7]);
 
-% plot all depth over time plots in one subplot
+% Plot all depth over time plots in one subplot
 p1_1 = plot(time_min_1,meanMDL_1);
 hold on;
 p1_2 = plot(time_min_2,meanMDL_2);
@@ -130,13 +130,13 @@ ax1 = f1.CurrentAxes;
 xlim([0 max(time_min_1)])
 ylim([2 13])
 set(gca,'YTick',(2:0.5:13))
-extra = axes('Position',get(ax1,'Position'),'Color','none','YAxisLocation','right'); %create second numbered y-axis on the left side
-linkaxes([ax1 extra]);  
+extra = axes('Position',get(ax1,'Position'),'Color','none','YAxisLocation','right');  % Get second y-axis on the right %create second numbered y-axis on the left side
+linkaxes([ax1 extra]);  % Get second y-axis on the right
 ylim([2 13])
 set(gca,'YTick',(2:0.5:13))
 title(ax1, 'Mean Depth against Time (normalized)');
 xlabel(ax1, 'Time (minutes)');
-ylabel(ax1, 'Depth (mm)');
+ylabel(ax1, 'Measurement error (mm)');
 
 hold off;
 
@@ -147,11 +147,11 @@ newUnits = 'normalized';
 set(lgd,'Position', newPosition,'Units', newUnits);
 title(lgd,'Actual distances','FontSize',12)
 
-% plot second subfigure spanning over fewer spaces to make it smaller
-% relative to the first subplot
+% Plot second subfigure spanning over fewer spaces to make it smaller
+% relative to the first subplot.
 subplot(3,4,[9 10 11]);
 
-% plot all std plots in one subplot
+% Plot all std plots in one subplot
 p2_1 = plot(time_min_1,stdMDL_1);
 hold on;
 p2_2 = plot(time_min_2,stdMDL_2);
@@ -166,7 +166,7 @@ p2_6 = plot(time_min_6,stdMDL_6);
 hold on;
 grid on;
 
-% set axis limits, labels and title
+% Set axis limits, labels and title
 ax1 = f1.CurrentAxes;
 xlim([0 max(time_min_1)])
 title(ax1, 'Std Depth against Time');
@@ -177,7 +177,7 @@ hold off;
 %% plot seperate figures (1)
 f2=figure;
 
-% plot all depth over time plots in one plot
+% Plot all depth over time plots in one plot
 p1_1 = plot(time_min_1,meanMDL_1);
 hold on;
 p1_2 = plot(time_min_2,meanMDL_2);
@@ -188,6 +188,9 @@ p1_4 = plot(time_min_4,meanMDL_4);
 hold on;
 p1_5 = plot(time_min_5,meanMDL_5);
 hold on;
+p1_6 = plot(time_min_6,meanMDL_6);
+hold on;
+grid on;
 
 ax2 = f2.CurrentAxes;
 xlim([0 max(time_min_1)])
@@ -196,13 +199,13 @@ xlabel(ax2, 'Time (minutes)');
 ylabel(ax2, 'Depth (mm)');
 hold off;
 
-lgd = legend([p1_1,p1_2,p1_3,p1_4,p1_5],{'1500 mm','1500 mm','2000 mm','2500 mm','3000 mm'},'Location','southeast');
+lgd = legend([p1_1,p1_2,p1_6,p1_3,p1_4,p1_5],{'1500 mm run 1','1500 mm run 2','1500 mm run 3','2000 mm','2500 mm','3000 mm'},'Location','southeast');
 
 %% plot seperate figures (2)
 
 f3=figure;
 
-% plot all std plots in one plot
+% Plot all std plots in one plot
 p2_1 = plot(time_min_1,stdMDL_1);
 hold on;
 p2_2 = plot(time_min_2,stdMDL_2);
@@ -213,6 +216,9 @@ p2_4 = plot(time_min_4,stdMDL_4);
 hold on;
 p2_5 = plot(time_min_5,stdMDL_5);
 hold on;
+p1_6 = plot(time_min_6,stdMDL_6);
+hold on;
+grid on;
 
 ax3 = f3.CurrentAxes;
 xlim([0 max(time_min_1)])
@@ -220,4 +226,4 @@ title(ax3, 'Std Depth against Time');
 xlabel(ax3, 'Time (minutes)');
 ylabel(ax3, 'Std depth (mm)'); 
 hold off;
-lgd = legend([p1_1,p1_2,p1_3,p1_4,p1_5],{'1500 mm','1500 mm','2000 mm','2500 mm','3000 mm'},'Location','southeast');
+lgd = legend([p1_1,p1_2,p1_6,p1_3,p1_4,p1_5],{'1500 mm run 1','1500 mm run 2','1500 mm run 3','2000 mm','2500 mm','3000 mm'},'Location','southeast');

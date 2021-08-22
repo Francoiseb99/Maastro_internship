@@ -1,7 +1,7 @@
 function SaveImages(filename, Depth, Color, IR)
     % This function makes a recording using the Azure Kinect DK and saves
     % the data under a specified filename. It can be chosen to include
-    % depth images and / or color and / or infrared images.
+    % depth and / or color and / or infrared images.
     %
     % Variable(s):
     %   filename: specify under what name the data should be saved
@@ -13,7 +13,7 @@ function SaveImages(filename, Depth, Color, IR)
     
     %% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
     %filename = 'filename.mat';   
     %Depth = 1;
@@ -22,12 +22,12 @@ function SaveImages(filename, Depth, Color, IR)
     
     %% Extra settings / options
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 0;
     MaximumDepth = 5000;
     
@@ -116,7 +116,7 @@ function SaveImages(filename, Depth, Color, IR)
     end
     
     if IR == 1
-        % infrared stream figure
+        % Infrared stream figure
         f3 = figure;
         h3 = imshow(infrared);
         ax3 = f3.CurrentAxes;
@@ -166,7 +166,7 @@ function SaveImages(filename, Depth, Color, IR)
             % Copy data to Matlab matrices 
             [infrared, infrared_timestamp] = kz.getinfrared;
             
-            % update infrared figure
+            % Update infrared figure
             infrared = imadjust(infrared,[],[],0.5);
             set(h3,'CData',infrared); 
             timestampsIR(i) = infrared_timestamp;

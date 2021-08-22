@@ -1,7 +1,8 @@
 function ShowSavedImages(SavedFrames, Depth, Color, IR)
     % This function plays the footage created and saved by the function
-    % SaveImages. Which data is shown (Depth and/or Color) depends on which
-    % data is present in the file and which data is wanted by the user.
+    % SaveImages. Which data is shown (Depth and/or Color and/or IR) 
+    % depends on which data is present in the file and which data is wanted 
+    % by the user.
     %
     % Variable(s):
     %   SavedFrames: specify under what name the data is saved
@@ -13,7 +14,7 @@ function ShowSavedImages(SavedFrames, Depth, Color, IR)
     
 	%% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
     %SavedFrames = 'filename2.mat';   
     %Depth = 1;
@@ -22,12 +23,12 @@ function ShowSavedImages(SavedFrames, Depth, Color, IR)
     
     %% Extra settings / options
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 2950;
     MaximumDepth = 3050;
     
@@ -133,7 +134,7 @@ function ShowSavedImages(SavedFrames, Depth, Color, IR)
     end
 
     if IR_show == 1
-        % infrared stream figure
+        % Infrared stream figure
         f3 = figure;
         h3 = imshow(infrared);
         ax3 = f3.CurrentAxes;

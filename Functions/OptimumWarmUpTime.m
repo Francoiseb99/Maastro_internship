@@ -1,18 +1,18 @@
-% function point = OptimumWarmUpTime(DepthArrays,TimeArray)
-	% This function returns the optimum warm up time for the azure kinect
-	% based on the slope coefficient. 
+function point = OptimumWarmUpTime(DepthArrays,TimeArray)
+	% This function returns the optimum warm-up time for the Azure Kinect
+	% DK based on the slope coefficient. 
     %
     % Variable(s):
-    %   DepthArrays: an array of arrays with depth data averaged per minute
+    %   DepthArrays: an array of arrays with depth data averaged per minute (see ExtractData.m)
     %   TimeArray: the array with time data (minutes)    
 
     %% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
-    [meanMDL_1,meanMDL_2,meanMDL_3,meanMDL_4,meanMDL_5,time_min_1] = ExtractData();
-    DepthArrays = [meanMDL_1;meanMDL_2;meanMDL_3;meanMDL_4;meanMDL_5];
-    TimeArray = time_min_1;
+%     [meanMDL_1,meanMDL_2,meanMDL_3,meanMDL_4,meanMDL_5,time_min_1] = ExtractData();
+%     DepthArrays = [meanMDL_1;meanMDL_2;meanMDL_3;meanMDL_4;meanMDL_5];
+%     TimeArray = time_min_1;
     
     %% Create matrix with the desired data
     
@@ -38,17 +38,17 @@
     DiffDepthFinalList = [];
     DiffDepthMaxStdList = [];
     DiffDepthFinalStdList = [];    
-    SubAvgs1 = [];
-    SubAvgs2 = [];
     
     for gg = 1:length(TimeArray)
         dd = gg;
+        SubAvgs1 = [];
+        SubAvgs2 = [];
         for kk = 1:length(DepthArrays(:,1))
             SubAvg1 = Matrix(dd,4);
             SubAvgs1 = [SubAvgs1, SubAvg1];
             SubAvg2 = Matrix(dd,5);
             SubAvgs2 = [SubAvgs2, SubAvg2];            
-            dd = gg + length(TimeArray);
+            dd = gg + length(TimeArray)*kk;     % Takes same time point troughout all depth arrays
         end
         DiffDepthMaxSub = mean(SubAvgs1);
         DiffDepthMaxList = [DiffDepthMaxList, DiffDepthMaxSub];
@@ -63,7 +63,7 @@
         DiffDepthFinalStdList = [DiffDepthFinalStdList, DiffDepthFinalStdSub];        
     end
     
-    %% Create figure for average depth difference over time and accompanying std graph
+    %% Create figure for average depth difference over time and accompanying standard deviation graph
     
     f1 = figure;
     subplot(2,1,1);
@@ -102,11 +102,11 @@
     % Take the derivative
     dydx = (gradient(y) ./ gradient(x));  
     
-    % Determine geneeral coefficient based on start and end point
+    % Determine general coefficient based on start and end point
     b = (y(end)-y(1))/(x(end)-x(1));
     
     % Determine point with equal coefficient to general coefficient
-    point = find((dydx < b +0.00001) & (dydx > b -0.00001));
+    point = find((dydx < b +0.000005) & (dydx > b -0.000005)); % adjust the +... and -... to make sure it only finds one point
     
     % Determine starting point 
     a = y(point) - b*point;
@@ -159,4 +159,4 @@
     xlabel(ax3, 'Time (minutes)');
     ylabel(ax3, 'Std (mm)'); 
     hold off;
-% end
+end

@@ -1,7 +1,7 @@
-% function DepthOverTime(nrFrames)
+function DepthOverTime(nrFrames)
 	% This function determines the average depth of an area over time. This
 	% can be used to evaluate the precision of the camera over time. 
-    % (Note that research has shown that this can take up to 40-50 minutes)
+    % (Note that Tölgyessy et al. has shown that this can take up to 40-60 minutes)
     % This function returns several plots:
     %   - A plot which gives the mean depth over the area for each frame
     %   - A plot which gives the mean depth over the area averaged per second
@@ -13,38 +13,38 @@
     %
     % Variable(s):
     %   nrFrames:   specify number of frames to determine duration of data
-    %               acquiring (rough estimation gives 25-30 frames per second)
+    %               acquiring
 
 
     %% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
-    clear all;          %when using the function instead of this testing section, 
-    close all;          %make sure you also clear and close all before running the function
-    nrFrames = 1000000;
-    
+    % purposes.
+%     clear all;          % When using the function instead of this testing section, 
+%     close all;          % make sure you also clear and close all before running the function.
+%     nrFrames = 1000000;
+     
     %% Extra settings / options
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 0;
     MaximumDepth = 4000;
     
-    % set to true if you want to get a live feed from the depth estimation 
-    % (note that this plot may differ slightly from the final plot as it is 
-    % based on the i value in the for loop and not the time)
-    % (note that this LivePlot can cause a random error causing the code to 
+    % Set to true if you want to get a live feed from the depth estimation. 
+    % (Note that this plot may differ slightly from the final plot as it is 
+    % based on the i value in the for loop and not the time.)
+    % (Note that this LivePlot can cause a random error causing the code to 
     % stop (have not been able to solve this), hence it is not advised for
-    % long runs)
+    % long runs.)
     LivePlot = false;                
 
-    % use this to adjust the name it is saved under
-    % (note that this still gives some error during saving as the date is 
-    % not represented correctly)
+    % Use this to adjust the name it is saved under.
+    % (Note that this still gives some error during saving as the date is 
+    % not represented correctly.)
     Name = '08-08-2021'; Name = num2str(Name); 
     
     % Set actual depth here (measured by hand) (mm)
@@ -128,13 +128,13 @@
     end
     
     %% Select region of interest
-    %Take first image to select region of interest
+    % Take first image to select region of interest
 	set(h1,'CData',depth);      
     
-    [InterestRegion,rect]=imcrop;   %Select region of interest to be used for all other images throughout time
+    [InterestRegion,rect]=imcrop;   % Select region of interest to be used for all other images throughout time.
         
-        %Note that you have to select this manually and use the right mouse
-        %button to click on crop image before the code can continue
+        % Note that you have to select this manually and use the right mouse
+        % button to click on crop image before the code can continue.
     
     %% Create figures 
    	% Depth stream figure for continuous footage
@@ -195,7 +195,7 @@
         pause(0.01)
         i=i+1;
     end       
-    tictoc_time = toc       % To obtain the running time for the number of frames used (note this can differ slightly per run)
+    tictoc_time = toc       % To obtain the running time for the number of frames used. (note this can differ slightly per run)
     
     %% Calculate MeanDepth of interest region
     MeanDepth = mean(MeanDepthList);    % Mean depth of region throughout whole run 
@@ -239,7 +239,7 @@
     end
 
     % Create subplot with (1) the average depth of the area and per second
-    % and (2) the standard deviation per second
+    % and (2) the standard deviation per second.
     f4=figure;
     subplot(2,1,1);
     h4 = plot(time_seconds,meanMDL_sec);
@@ -285,7 +285,7 @@
     end
     
     % Create subplot with (1) the average depth of the area and per minute
-    % and (2) the standard deviation per minute
+    % and (2) the standard deviation per minute.
     f5=figure;
     subplot(2,1,1);
     plot(time_min,meanMDL);
@@ -357,7 +357,7 @@
     end
 
     % Create subplot with (1) the average depth of the area and per second
-    % and (2) the standard deviation per second
+    % and (2) the standard deviation per second.
     f7=figure;
     subplot(2,1,1);
     h7 = plot(temp,meanMDL_temp);
@@ -398,4 +398,4 @@
     
     disp(X)
 
-% end
+end

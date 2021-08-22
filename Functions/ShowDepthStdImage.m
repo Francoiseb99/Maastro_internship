@@ -1,33 +1,31 @@
-% function ShowDepthStdImage(SavedFrames, Depth, Color)
-    % This function plays the footage created and saved by the function
-    % SaveImages. Which data is shown (Depth and/or Color) depends on which
-    % data is present in the file and which data is wanted by the user.
-    % This is the same as the ShowSavedImages function, however this
-    % function includes a std map for the depth images over time.
+function ShowDepthStdImage(SavedFrames, Color)
+    % This function plays the depth and color footage created and saved by 
+    % the function SaveImages and gives a standard deviation map of the 
+    % depth values based on all frames taken. Displaying the color footage
+    % is optional, the depth data is necessary for the standard deviation
+    % map.
     %
     % Variable(s):
     %   SavedFrames: specify under what name the data is saved
-    %   Depth: show depth data if available yes:1 or no:0
     %   Color: show color images if available yes:1 or no:0
     
     %close all; 
     
 	%% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
-    SavedFrames = 'DBblock1.5mV1.mat';   
-    Depth = 1;
-    Color = 1;
+%     SavedFrames = 'DBblock1.5mV1.mat';   
+%     Color = 1;
     
     %% Extra settings / options
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 1450;
     MaximumDepth = 1650;
     
@@ -38,6 +36,8 @@
     allData = load(SavedFrames);
 
     %% Specify which data is present and wanted
+    Depth = 1;  % This is necessary, otherwise the function has no added value.
+    
     if isfield(allData, 'allFramesDepth') && Depth == 1
         Depth_Show = 1;
     else
@@ -135,4 +135,4 @@
     ax3 = f3.CurrentAxes;
     title(ax3, 'Std map')
   
-% end
+end

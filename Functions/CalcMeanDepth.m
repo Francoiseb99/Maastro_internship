@@ -1,32 +1,31 @@
 function MeanDepth = CalcMeanDepth(SavedFrames)
     % This function can be used for an experiment where the mean depth of
     % an object needs to be determined. The region of interest can be
-    % specified by the user afterwhich it will calculate the mean depth
+    % specified by the user after which it will calculate the mean depth
     % over the area over time.
     %
     % Variable(s):
     %   SavedFrames: specify under what name the data is saved
     
-    %% Extra settings / options
+    %% Testing
+    % Use this if you want to run it outside a function for testing
+    % purposes.
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+%     SavedFrames = "DistAcc45.mat"; 
+
+    %% Extra settings / options
+ 
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 1500;
     MaximumDepth = 0;    
     
     %% Add data path
     addpath('C:\Users\20169037\Documents\BMT\Vakken\Jaar 4\Q4\Stage\Matlab arrays');
-    
-    %% Testing
-    % Use this if you want to run it outside a function for testing
-    % purposes
-    
-    %SavedFrames = "DistAcc45.mat";
-    
     
 	%% Load data
     allData = load(SavedFrames);
@@ -81,13 +80,13 @@ function MeanDepth = CalcMeanDepth(SavedFrames)
 	colorbar(ax1)
 
     %% Select region of interest
-	depth = allFramesDepth(:,:,1);  %Take first image to select region of interest
+	depth = allFramesDepth(:,:,1);  % Take first image to select region of interest.
 	set(h1,'CData',depth);      
     
-    [InterestRegion,rect]=imcrop;   %Select region of interest to be used for all other images throughout time
+    [InterestRegion,rect]=imcrop;   % Select region of interest to be used for all other images throughout time.
         
-        %Note that you have to select this manually and use the right mouse
-        %button to click on crop image before the code can continue
+        % Note that you have to select this manually and use the right mouse
+        % button to click on crop image before the code can continue.
         
     %% Create figure 2 
    	% Depth stream figure

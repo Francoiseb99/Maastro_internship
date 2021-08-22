@@ -1,9 +1,9 @@
 function ShowLiveImages(Depth, Color, IR)
-	% This function provides a live stream of either the depth, color or IR
-	% data or a combination. Note that this function only gives live data
-	% and does not save anything. In addition it should be noted that it 
-    % does not have a predetermined end time, meaning the stream needs to 
-    % be manually terminated.
+	% This function provides a live stream of either the depth, color or
+	% infrared data or a combination. Note that this function only gives 
+    % live data and does not save anything. In addition, it should be noted 
+    % that it does not have a predetermined end time, meaning the stream 
+    % needs to be manually terminated.
     %
     % Variable(s):
     %   Depth: show depth data if available yes:1 or no:0
@@ -12,23 +12,23 @@ function ShowLiveImages(Depth, Color, IR)
 
     %% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
-    clear all;        % If the function is used, make sure that the
-                      % workspace is clear before running the function
-    close all;
-    Depth = 1;
-    Color = 1;
-    IR = 1;
+%     clear all;        % If the function is used, make sure that the
+%                       % workspace is clear before running the function
+%     close all;
+%     Depth = 1;
+%     Color = 1;
+%     IR = 1;
     
     %% Extra settings / options
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 1500;
     MaximumDepth = 0;    
     
@@ -149,7 +149,7 @@ function ShowLiveImages(Depth, Color, IR)
             % Copy data to Matlab matrices 
             [infrared, infrared_timestamp] = kz.getinfrared;
             
-            % update infrared figure
+            % Update infrared figure
             infrared = imadjust(infrared,[],[],0.5);
             set(h3,'CData',infrared); 
         end        

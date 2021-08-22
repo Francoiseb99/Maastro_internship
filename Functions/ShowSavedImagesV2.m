@@ -3,8 +3,8 @@ function ShowSavedImagesV2(SavedFrames, Depth, Color, IR)
     % with the main differences being this one is to be used for footage
     % saved by the SaveImagesV2. Differences with the functions SaveImages
     % and ShowSavedImages are the fact that the V2 versions include
-    % infrared footage, don't use intervaltimes based on the actuall
-    % interval but rather a preset interval time and slightly different
+    % not making use of the interval times based on the actuall
+    % interval but rather a pre-set interval time and slightly different
     % variablenames so the data can be used for the runDetection.m file
     % from Nick Staut.
     %
@@ -18,7 +18,7 @@ function ShowSavedImagesV2(SavedFrames, Depth, Color, IR)
     
 	%% Testing
     % Use this if you want to run it outside a function for testing
-    % purposes
+    % purposes.
     
     %SavedFrames = 'filename2.mat';   
     %Depth = 1;
@@ -27,12 +27,12 @@ function ShowSavedImagesV2(SavedFrames, Depth, Color, IR)
 
     %% Extra settings / options
     
-    % set to true if you want the range to be determined automatically based 
-    % on first image, set to false if manually is prefered
+    % Set to true if you want the range to be determined automatically based 
+    % on first image, set to false if manually is prefered.
     AutomaticOutOfRange = false;     
 
-    % set minumum and maximum depth range in case the manual option is
-    % chosen
+    % Set minumum and maximum depth range in case the manual option is
+    % chosen.
     MinimumDepth = 0;
     MaximumDepth = 5000;
         
@@ -92,7 +92,6 @@ function ShowSavedImagesV2(SavedFrames, Depth, Color, IR)
     
     if IR_Show == 1
         allFramesIR=allData.InfraredFrames;
-        %timestampsDepth=allData.timestampsDepth;
         depthHeight = size(allFramesIR,1);
         depthWidth = size(allFramesIR,2);
         nrFrames = size(allFramesIR,3);

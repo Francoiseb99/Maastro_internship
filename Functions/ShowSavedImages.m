@@ -133,7 +133,7 @@ function ShowSavedImages(SavedFrames, Depth, Color, IR)
         set(f2,'keypress','k=get(f2,''currentchar'');'); % Listen keypress
     end
 
-    if IR_show == 1
+    if IR_Show == 1
         % Infrared stream figure
         f3 = figure;
         h3 = imshow(infrared);

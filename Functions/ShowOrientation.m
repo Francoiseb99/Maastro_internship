@@ -1,4 +1,4 @@
-function ShowOrientation(Duration)
+function ShowOrientation(Duration, Filename)
 	% This function provides a live plot of the orientation of the camera
 	% starting out in flat position. It takes the data from the internal
 	% gyroscope (angle speed) and plots this. However, this function proved 
@@ -7,6 +7,7 @@ function ShowOrientation(Duration)
     %
     % Variable(s):
     %   Duration: desired duration of obtaining data (in minutes)
+    %   Filename: filename under which relevant data should be saved
     
     %% Testing
     % Use this if you want to run it outside a function for testing
@@ -15,7 +16,8 @@ function ShowOrientation(Duration)
 %     clear all;        % If the function is used, make sure that the
 %                       % workspace is clear before running the function
 %     close all;
-%     Duration = 240;
+%     Duration = 250;
+%     Filename = "Orientation_horizontal_run2.mat";
 
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
@@ -57,7 +59,6 @@ function ShowOrientation(Duration)
     
     % Create plot total orientation over time
     f3 = figure;
-
     
     %% Acquire data
     pitch_new = 0;
@@ -161,4 +162,8 @@ function ShowOrientation(Duration)
     xlim([0 max(time_sec)])
     set(gca,'XTick',(0:20:max(time_sec)))
     lgd = legend([p1, p2, p3], {'Pitch', 'Yaw', 'Roll'}, 'location', 'northwest');
+    
+    %% Save relevant data
+    save(Filename, 'pitch_list', 'roll_list', 'yaw_list', 'time_list', 'time_sec')
+    
 end

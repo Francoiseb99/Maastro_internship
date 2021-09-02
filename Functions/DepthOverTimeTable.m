@@ -1,6 +1,6 @@
 function Table = DepthOverTimeTable(DepthArray,TimeArray,TimePoints)
 	% This function returns a table with the depths at the predefined
-	% timepoints allong with the difference of this depth with the final
+	% timepoints along with the difference of this depth with the final
 	% depth and with the maximum encountered depth.
     %
     % Variable(s):

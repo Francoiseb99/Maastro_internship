@@ -9,11 +9,13 @@ function ShowDepthStdImage(SavedFrames, Color)
     %   SavedFrames: specify under what name the data is saved
     %   Color: show color images if available yes:1 or no:0
     
-    %close all; 
+     
     
 	%% Testing
     % Use this if you want to run it outside a function for testing
     % purposes.
+    
+%     close all;
     
 %     SavedFrames = 'DBblock1.5mV1.mat';   
 %     Color = 1;

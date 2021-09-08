@@ -1,4 +1,4 @@
-function ShowOrientation(Duration, Filename)
+% function ShowOrientation(Duration, Filename)
 	% This function provides a live plot of the orientation of the camera
 	% starting out in flat position. It takes the data from the internal
 	% gyroscope (angle speed) and plots this. However, this function proved 
@@ -13,11 +13,11 @@ function ShowOrientation(Duration, Filename)
     % Use this if you want to run it outside a function for testing
     % purposes.
     
-%     clear all;        % If the function is used, make sure that the
-%                       % workspace is clear before running the function
-%     close all;
-%     Duration = 250;
-%     Filename = "Orientation_horizontal_run2.mat";
+    clear all;        % If the function is used, make sure that the
+                      % workspace is clear before running the function
+    close all;
+    Duration = 250;
+    Filename = "Orientation_horizontal_run2.mat";
 
     %% Add Mex path
     addpath('C:/Users/20169037/AppData/Roaming/MathWorks/MATLAB Add-Ons/Collections/KinZ-Matlab/Mex');      %% Set path!
@@ -139,7 +139,7 @@ function ShowOrientation(Duration, Filename)
         
         time = time+1;
         
-        pause(0.001)
+        pause(1)
         tictoc = toc
         tictoc_list = [tictoc_list, tictoc];
     end    
@@ -166,4 +166,4 @@ function ShowOrientation(Duration, Filename)
     %% Save relevant data
     save(Filename, 'pitch_list', 'roll_list', 'yaw_list', 'time_list', 'time_sec')
     
-end
+% end
